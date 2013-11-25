@@ -121,7 +121,6 @@ class SingleSoundLayer implements SoundLayer {
     }
 
     public function removeSoundHandle(value:SoundHandle):Void {
-        value.stop();
         _allSounds.remove(value);
     }
 }

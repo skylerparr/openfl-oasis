@@ -101,8 +101,10 @@ class SoundHandleImpl implements SoundHandle {
         this.leftToLeft = value;
         if(_soundChannel != null) {
             var soundTransform: SoundTransform = _soundChannel.soundTransform;
+            #if flash
             soundTransform.leftToLeft = leftToLeft;
             _soundChannel.soundTransform = soundTransform;
+            #end
         }
         return leftToLeft;
     }
@@ -115,8 +117,10 @@ class SoundHandleImpl implements SoundHandle {
         this.leftToRight = value;
         if(_soundChannel != null) {
             var soundTransform: SoundTransform = _soundChannel.soundTransform;
+            #if flash
             soundTransform.leftToRight = leftToRight;
             _soundChannel.soundTransform = soundTransform;
+            #end
         }
         return leftToRight;
     }
@@ -129,8 +133,10 @@ class SoundHandleImpl implements SoundHandle {
         this.rightToRight = value;
         if(_soundChannel != null) {
             var soundTransform: SoundTransform = _soundChannel.soundTransform;
+            #if flash
             soundTransform.rightToRight = rightToRight;
             _soundChannel.soundTransform = soundTransform;
+            #end
         }
         return rightToRight;
     }
@@ -143,8 +149,10 @@ class SoundHandleImpl implements SoundHandle {
         this.rightToLeft = value;
         if(_soundChannel != null) {
             var soundTransform: SoundTransform = _soundChannel.soundTransform;
+            #if flash
             soundTransform.rightToLeft = rightToLeft;
             _soundChannel.soundTransform = soundTransform;
+            #end
         }
         return rightToLeft;
     }
@@ -160,10 +168,13 @@ class SoundHandleImpl implements SoundHandle {
         var soundTransform: SoundTransform = _soundChannel.soundTransform;
         soundTransform.volume = volume;
         soundTransform.pan = pan;
+        #if flash
         soundTransform.leftToLeft = leftToLeft;
         soundTransform.leftToRight = leftToRight;
         soundTransform.rightToRight = rightToRight;
         soundTransform.rightToLeft = rightToLeft;
+        #end
+        _soundChannel.soundTransform = soundTransform;
     }
 
     public function stop():Void {
@@ -171,6 +182,7 @@ class SoundHandleImpl implements SoundHandle {
             _soundChannel.stop();
             _soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
             _soundLayer.removeSoundHandle(this);
+            _soundChannel = null;
         }
     }
 
