@@ -103,6 +103,6 @@ class RunnableAnimation implements Animation implements Runnable {
 
     public function resume():Void {
         _running = true;
+        percentComplete = 0;
     }
-
 }
