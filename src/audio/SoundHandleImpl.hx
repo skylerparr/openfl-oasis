@@ -36,6 +36,11 @@ class SoundHandleImpl implements SoundHandle {
     public function new(sound: Sound, soundLayer: SoundLayer) {
         _sound = sound;
         _soundLayer = soundLayer;
+        pan = 0;
+        leftToLeft = 1;
+        leftToRight = 1;
+        rightToRight = 1;
+        rightToLeft = 1;
     }
 
     public function get_length():Float {
@@ -165,6 +170,9 @@ class SoundHandleImpl implements SoundHandle {
         _loopCount = loops;
         _soundChannel = _sound.play(startTime, _loopCount);
         _soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+        _sound.addEventListener(Event.COMPLETE, function(e: Event): Void {
+            trace("sound loaded");
+        });
         var soundTransform: SoundTransform = _soundChannel.soundTransform;
         soundTransform.volume = volume;
         soundTransform.pan = pan;
