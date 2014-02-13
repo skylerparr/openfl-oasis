@@ -170,9 +170,6 @@ class SoundHandleImpl implements SoundHandle {
         _loopCount = loops;
         _soundChannel = _sound.play(startTime, _loopCount);
         _soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
-        _sound.addEventListener(Event.COMPLETE, function(e: Event): Void {
-            trace("sound loaded");
-        });
         var soundTransform: SoundTransform = _soundChannel.soundTransform;
         soundTransform.volume = volume;
         soundTransform.pan = pan;

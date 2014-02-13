@@ -1,4 +1,5 @@
 package audio;
+import flash.events.IOErrorEvent;
 import flash.net.URLRequest;
 import flash.media.Sound;
 import openfl.Assets;
@@ -81,6 +82,7 @@ class LayeredSoundManager implements SoundManager {
         }
         #if flash
         var sound: Sound = new Sound();
+        sound.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
         var req: URLRequest = new URLRequest(mappedSound.url);
         sound.load(req);
         #else
@@ -98,6 +100,10 @@ class LayeredSoundManager implements SoundManager {
         layer.addSoundHandle(handle);
         layer.volume = masterVolume;
         return handle;
+    }
+
+    private function onIOError(e: IOErrorEvent): Void {
+        trace(e.text);
     }
 }
 
