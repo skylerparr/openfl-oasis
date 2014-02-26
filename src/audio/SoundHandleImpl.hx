@@ -75,8 +75,11 @@ class SoundHandleImpl implements SoundHandle {
 
     public function set_volume(value:Float):Float {
         this.volume = value;
-        if(volume < 0) {
+        if(volume <= 0) {
             volume = 0;
+            if(_volumeChangeHandler != null) {
+                _volumeChangeHandler(this);
+            }
             stop();
             return volume;
         }
@@ -173,11 +176,14 @@ class SoundHandleImpl implements SoundHandle {
     }
 
     public function play(startTime:Float = 0, loops:Int = 0):Void {
+        var tmpVolumeHandler: SoundSettings->Void = _volumeChangeHandler;
+        _volumeChangeHandler = null;
+        volume = _soundLayer.volume;
         if(volume == 0) {
             return;
         }
         _loopCount = loops;
-        _soundChannel = _sound.play(startTime, _loopCount);
+        _soundChannel = _sound.play(startTime, -1);
         if(_soundChannel == null) {
             return;
         }
@@ -192,6 +198,8 @@ class SoundHandleImpl implements SoundHandle {
         soundTransform.rightToLeft = rightToLeft;
         #end
         _soundChannel.soundTransform = soundTransform;
+        _soundLayer.addSoundHandle(this);
+        _volumeChangeHandler = tmpVolumeHandler;
     }
 
     public function stop():Void {
