@@ -32,7 +32,8 @@ class SoundHandleImpl implements SoundHandle {
 
     private var _pausedPosition: Float;
     private var _loopCount: Int;
-    
+    private var _volumeChangeHandler: SoundSettings->Void;
+
     public function new(sound: Sound, soundLayer: SoundLayer) {
         _sound = sound;
         _soundLayer = soundLayer;
@@ -76,6 +77,8 @@ class SoundHandleImpl implements SoundHandle {
         this.volume = value;
         if(volume < 0) {
             volume = 0;
+            stop();
+            return volume;
         }
         if(volume > _soundLayer.volume) {
             volume = _soundLayer.volume;
@@ -84,6 +87,9 @@ class SoundHandleImpl implements SoundHandle {
             var soundTransform: SoundTransform = _soundChannel.soundTransform;
             soundTransform.volume = volume;
             _soundChannel.soundTransform = soundTransform;
+        }
+        if(_volumeChangeHandler != null) {
+            _volumeChangeHandler(this);
         }
         return volume;
     }
@@ -167,8 +173,14 @@ class SoundHandleImpl implements SoundHandle {
     }
 
     public function play(startTime:Float = 0, loops:Int = 0):Void {
+        if(volume == 0) {
+            return;
+        }
         _loopCount = loops;
         _soundChannel = _sound.play(startTime, _loopCount);
+        if(_soundChannel == null) {
+            return;
+        }
         _soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
         var soundTransform: SoundTransform = _soundChannel.soundTransform;
         soundTransform.volume = volume;
@@ -193,7 +205,7 @@ class SoundHandleImpl implements SoundHandle {
 
     private function onSoundComplete(e: Event):Void {
         _loopCount--;
-        if(_loopCount == -1) {
+        if(_loopCount <= -1) {
             stop();
         }
         if(_onCompleteHandler != null) {
@@ -212,5 +224,9 @@ class SoundHandleImpl implements SoundHandle {
 
     public function onComplete(handler:Void -> Void):Void {
         _onCompleteHandler = handler;
+    }
+
+    public function onVolumeChange(handler:SoundSettings -> Void) {
+        _volumeChangeHandler = handler;
     }
 }

@@ -1,4 +1,5 @@
 package audio;
+import flash.events.EventDispatcher;
 class SingleSoundLayer implements SoundLayer {
     @:isVar
     public var name(get, set): String;
@@ -17,6 +18,7 @@ class SingleSoundLayer implements SoundLayer {
 
     private var _allSounds: List<SoundHandle>;
     private var _soundManager: SoundManager;
+    private var _volumeChangeHandler: SoundSettings->Void;
 
     public function new(soundManager: SoundManager) {
         _soundManager = soundManager;
@@ -46,6 +48,9 @@ class SingleSoundLayer implements SoundLayer {
         }
         for(soundHandle in _allSounds) {
             soundHandle.volume = volume;
+        }
+        if(_volumeChangeHandler != null) {
+            _volumeChangeHandler(this);
         }
         return volume;
     }
@@ -118,9 +123,14 @@ class SingleSoundLayer implements SoundLayer {
 
     public function addSoundHandle(value:SoundHandle):Void {
         _allSounds.push(value);
+        value.volume = volume;
     }
 
     public function removeSoundHandle(value:SoundHandle):Void {
         _allSounds.remove(value);
+    }
+
+    public function onVolumeChange(handler:SoundSettings -> Void) {
+        _volumeChangeHandler = handler;
     }
 }

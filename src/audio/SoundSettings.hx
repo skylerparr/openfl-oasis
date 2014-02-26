@@ -6,4 +6,5 @@ interface SoundSettings {
     var leftToRight(get, set): Float;
     var rightToRight(get, set): Float;
     var rightToLeft(get, set): Float;
+    function onVolumeChange(handler: SoundSettings->Void): Void;
 }
