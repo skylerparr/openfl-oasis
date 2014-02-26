@@ -183,7 +183,11 @@ class SoundHandleImpl implements SoundHandle {
             return;
         }
         _loopCount = loops;
-        _soundChannel = _sound.play(startTime, -1);
+        try {
+            _soundChannel = _sound.play(startTime, -1);
+        } catch (e: Dynamic) {
+            trace(e);
+        }
         if(_soundChannel == null) {
             return;
         }
