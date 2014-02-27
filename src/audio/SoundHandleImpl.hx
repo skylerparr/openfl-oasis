@@ -218,7 +218,7 @@ class SoundHandleImpl implements SoundHandle {
     private function onSoundComplete(e: Event):Void {
         _loopCount--;
         stop();
-        if(_loopCount >= 0) {
+        if(_loopCount != 0) {
             play(0, _loopCount);
         }
         if(_onCompleteHandler != null) {
