@@ -184,7 +184,7 @@ class SoundHandleImpl implements SoundHandle {
         }
         _loopCount = loops;
         try {
-            _soundChannel = _sound.play(startTime, -1);
+            _soundChannel = _sound.play(startTime, 1);
         } catch (e: Dynamic) {
             trace(e);
         }
@@ -217,8 +217,9 @@ class SoundHandleImpl implements SoundHandle {
 
     private function onSoundComplete(e: Event):Void {
         _loopCount--;
-        if(_loopCount <= -1) {
-            stop();
+        stop();
+        if(_loopCount >= 0) {
+            play(0, _loopCount);
         }
         if(_onCompleteHandler != null) {
             _onCompleteHandler();
