@@ -175,7 +175,7 @@ class SoundHandleImpl implements SoundHandle {
         return rightToLeft;
     }
 
-    public function play(startTime:Float = 0, loops:Int = 0):Void {
+    public function play(startTime:Float = 0, loops:Int = 1):Void {
         var tmpVolumeHandler: SoundSettings->Void = _volumeChangeHandler;
         _volumeChangeHandler = null;
         volume = _soundLayer.volume;
