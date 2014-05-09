@@ -33,6 +33,7 @@ class SoundHandleImpl implements SoundHandle {
     private var _pausedPosition: Float;
     private var _loopCount: Int;
     private var _volumeChangeHandler: SoundSettings->Void;
+    private var _isPlaying: Bool;
 
     public function new(sound: Sound, soundLayer: SoundLayer) {
         _sound = sound;
@@ -176,6 +177,9 @@ class SoundHandleImpl implements SoundHandle {
     }
 
     public function play(startTime:Float = 0, loops:Int = 1):Void {
+        if(_isPlaying) {
+            return;
+        }
         var tmpVolumeHandler: SoundSettings->Void = _volumeChangeHandler;
         _volumeChangeHandler = null;
         volume = _soundLayer.volume;
@@ -191,6 +195,7 @@ class SoundHandleImpl implements SoundHandle {
         if(_soundChannel == null) {
             return;
         }
+        _isPlaying = true;
         _soundChannel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
         var soundTransform: SoundTransform = _soundChannel.soundTransform;
         soundTransform.volume = volume;
@@ -212,6 +217,7 @@ class SoundHandleImpl implements SoundHandle {
             _soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
             _soundLayer.removeSoundHandle(this);
             _soundChannel = null;
+            _isPlaying = false;
         }
     }
 
