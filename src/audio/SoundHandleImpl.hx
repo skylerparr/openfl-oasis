@@ -233,12 +233,18 @@ class SoundHandleImpl implements SoundHandle {
     }
 
     public function pause():Void {
-        _pausedPosition = position;
-        _soundChannel.stop();
+        if(_isPlaying && _soundChannel != null) {
+            _isPlaying = false;
+            _soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+            _pausedPosition = position;
+            _soundChannel.stop();
+        }
     }
 
     public function resume():Void {
-        _soundChannel = _sound.play(_pausedPosition, _loopCount);
+        if(!_isPlaying && _sound != null) {
+            play(_pausedPosition, _loopCount);
+        }
     }
 
     public function onComplete(handler:Void -> Void):Void {
