@@ -1,4 +1,5 @@
 package audio;
+import flash.utils.ByteArray;
 import flash.events.IOErrorEvent;
 import flash.net.URLRequest;
 import flash.media.Sound;
@@ -9,8 +10,8 @@ class LayeredSoundManager implements SoundManager {
     @:isVar
     public var masterVolume(get, set): Float;
 
-    private var _soundMap: Map<String, MappedSound>;
-    private var _layerMap: Map<String, SoundLayer>;
+    public var _soundMap: Map<String, MappedSound>;
+    public var _layerMap: Map<String, SoundLayer>;
 
     public function new() {
         _soundMap = new Map<String, MappedSound>();

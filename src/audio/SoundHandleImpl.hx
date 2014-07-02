@@ -45,6 +45,18 @@ class SoundHandleImpl implements SoundHandle {
         rightToLeft = 1;
     }
 
+    public function dispose(): Void {
+        stop();
+        if(_soundLayer != null) {
+            _soundLayer.removeSoundHandle(this);
+            _soundLayer = null;
+        }
+        _sound = null;
+        _soundChannel = null;
+        _onCompleteHandler = null;
+        _volumeChangeHandler = null;
+    }
+
     public function get_length():Float {
         return _sound.length;
     }
@@ -215,7 +227,6 @@ class SoundHandleImpl implements SoundHandle {
         if(_soundChannel != null) {
             _soundChannel.stop();
             _soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
-            _soundLayer.removeSoundHandle(this);
             _soundChannel = null;
             _isPlaying = false;
         }
