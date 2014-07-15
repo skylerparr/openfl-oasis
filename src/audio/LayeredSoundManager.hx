@@ -98,6 +98,7 @@ class LayeredSoundManager implements SoundManager {
             return null;
         }
         var handle: SoundHandleImpl = new SoundHandleImpl(sound, layer);
+        handle.name = name;
         layer.addSoundHandle(handle);
         handle.volume = layer.volume;
         return handle;

@@ -25,6 +25,8 @@ class SoundHandleImpl implements SoundHandle {
     @:isVar
     public var rightToLeft(get, set): Float;
 
+    public var name: String;
+
     private var _sound: Sound;
     private var _soundLayer: SoundLayer;
     private var _soundChannel: SoundChannel;
@@ -52,6 +54,7 @@ class SoundHandleImpl implements SoundHandle {
             _soundLayer = null;
         }
         _sound = null;
+
         _soundChannel = null;
         _onCompleteHandler = null;
         _volumeChangeHandler = null;
@@ -219,7 +222,6 @@ class SoundHandleImpl implements SoundHandle {
         soundTransform.rightToLeft = rightToLeft;
         #end
         _soundChannel.soundTransform = soundTransform;
-        _soundLayer.addSoundHandle(this);
         _volumeChangeHandler = tmpVolumeHandler;
     }
 
