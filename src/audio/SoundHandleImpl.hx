@@ -228,8 +228,8 @@ class SoundHandleImpl implements SoundHandle {
             _soundChannel.stop();
             _soundChannel.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
             _soundChannel = null;
-            _isPlaying = false;
         }
+        _isPlaying = false;
     }
 
     private function onSoundComplete(e: Event):Void {
